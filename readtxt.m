@@ -1,15 +1,17 @@
 clc;clear;
 
-txtname='record_D1.txt';
+txtname='record_D3.txt';
 
 fileID = fopen(txtname,'r');
 formatSpec = '%f';
-A = fscanf(fileID,formatSpec);
+edgein = fscanf(fileID,formatSpec);
+edge=reshape(edgein,77,length(edgein)/77);
+edge=edge';
 
-Acount=1;
-for i=1:length(A)
-    
-    if(mod(i,77)==0)
-       Acount=Acount; 
-    end
-end
+txtname='CQmap_D3.txt';
+
+fileID = fopen(txtname,'r');
+formatSpec = '%f';
+CQin = fscanf(fileID,formatSpec);
+CQmap_dis=reshape(CQin,11,length(CQin)/11);
+CQmap_dis=CQmap_dis';

@@ -1,11 +1,28 @@
 clc;clear;
-edge=xlsread('record.xlsx');
+% edge=xlsread('record.xlsx');
+
+
+txtname='record_D3.txt';
+fileID = fopen(txtname,'r');
+formatSpec = '%f';
+edgein = fscanf(fileID,formatSpec);
+edge=reshape(edgein,77,length(edgein)/77);
+edge=edge';
 datae=length(edge);
 
 LBP = edge;
 
 % NSR estimation
-CQmap_dis=xlsread('CQmap.xlsx');
+% CQmap_dis=xlsread('CQmap.xlsx');
+
+txtname='CQmap_D3.txt';
+
+fileID = fopen(txtname,'r');
+formatSpec = '%f';
+CQin = fscanf(fileID,formatSpec);
+CQmap_dis=reshape(CQin,11,length(CQin)/11);
+CQmap_dis=CQmap_dis';
+
 datac=length(CQmap_dis);
 
 scale=0.01;
@@ -105,6 +122,8 @@ for i=1:(k_c(p_layer)-1)
         for j=0:8
             u=CQmap_dis(CQ_index(p_layer,i)+j,3:5);
             v=CQmap_dis(CQ_index(p_layer,i)+j,6:8);
+            % check direction of normal
+            
             if(acosd(dot(u,v)/(norm(u)*norm(v))) == acosd(dot(u,v)/(norm(u)*norm(v))))
                 NSR(j+1,NSRc(j+1))= acosd(dot(u,v)/(norm(u)*norm(v)));
                 lastNSR=acosd(dot(u,v)/(norm(u)*norm(v)));
@@ -172,6 +191,8 @@ end
         % store LBP and min
         for lp=1:9
             if(out(1,count-1)==lp)
+               CQ_pool(lpc)=LBP_cq(LC);
+                
                LBP_pool(lpc,1:78)=LBP_nsr(LC,:);
                LBP_pool(lpc,79)=lp;
                lpc=lpc+1;
@@ -179,6 +200,7 @@ end
                NSR_pool(lpc2,1:9)=NSRsum(:);
                NSR_pool(lpc2,10)=lp;
                lpc2=lpc2+1;
+               
             end
         end
         
